@@ -23,20 +23,19 @@ PostSchema.pre("save", function() {
   }
 });
 
-PostSchema.pre("remove", function() {
+PostSchema.pre("remove", async function() {
   if (process.env.STORAGE_TYPE === "s3") {
-    return s3
-      .deleteObject({
-        Bucket: process.env.BUCKET_NAME,
-        Key: this.key
-      })
-      .promise()
-      .then(response => {
-        console.log(response.status);
-      })
-      .catch(response => {
-        console.log(response.status);
-      });
+    try {
+      const response = await s3
+        .deleteObject({
+          Bucket: process.env.BUCKET_NAME,
+          Key: this.key
+        })
+        .promise();
+      console.log(response.status);
+    } catch (response_1) {
+      console.log(response_1.status);
+    }
   } else {
     return promisify(fs.unlink)(
       path.resolve(__dirname, "..", "..", "tmp", "uploads", this.key)

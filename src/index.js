@@ -14,7 +14,8 @@ const app = express();
 mongoose.connect(
   process.env.MONGO_URL,
   {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   }
 );
 
@@ -29,4 +30,4 @@ app.use(
 
 app.use(require("./routes"));
 
-app.listen(3000);
+app.listen(3001);

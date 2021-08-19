@@ -10,6 +10,19 @@ routes.get("/posts", async (req, res) => {
   return res.json(posts);
 });
 
+routes.get("/posts/processed", async (req, res) => {
+  const posts = await Post.find();
+  const test = {
+      "Bibliografia": {
+      "title": "Example Title",
+      "nome" : posts.name,
+      "year": "2010",
+      "Autor": "Desconhecido"
+    }
+  }
+  return res.json(test);
+});
+
 routes.post("/posts", multer(multerConfig).single("file"), async (req, res) => {
   const { originalname: name, size, key, location: url = "" } = req.file;
 
